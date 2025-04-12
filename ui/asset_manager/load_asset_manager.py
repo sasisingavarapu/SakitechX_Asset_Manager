@@ -1,15 +1,10 @@
 """
-import SakitexhX_Asset_Manger
-from SakitexhX_Asset_Manger.ui.asset_manager import load_asset_manager
+import SakitechX_Asset_Manager
+from SakitechX_Asset_Manager.ui.asset_manager import load_asset_manager
 
 
 
 """
-
-
-
-
-
 
 from PySide2 import QtUiTools, QtWidgets, QtGui, QtCore
 from shiboken2 import wrapInstance
