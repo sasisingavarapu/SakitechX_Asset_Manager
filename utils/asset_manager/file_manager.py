@@ -42,7 +42,7 @@ class FileManager(object):
             json_data = json.load(f)
 
         path = json_data['scenes_path']
-        print(path)
+       # print(path)
         return path
 
     def get_file_in_path(self, path):
