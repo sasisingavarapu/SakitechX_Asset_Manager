@@ -13,8 +13,6 @@ reload(file_manager)
 
 
 """
-
-
 import os
 import glob
 import json
@@ -43,9 +41,9 @@ class FileManager(object):
         with open(path_to_json, 'r') as f:
             json_data = json.load(f)
 
-        print("Loaded config path from:", path_to_json)
-
-        return json_data.get("scenes_path", "")
+        path = json_data['scenes_path']
+        print(path)
+        return path
 
     def get_file_in_path(self, path):
         return glob.glob(os.path.join(path, '*'))
@@ -68,3 +66,5 @@ class FileManager(object):
 
     def get_basename(self, path):
         return os.path.basename(path)
+
+
