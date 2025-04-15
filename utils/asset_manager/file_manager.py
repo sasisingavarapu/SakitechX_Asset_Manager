@@ -64,6 +64,8 @@ class FileManager(object):
 
         current_asset_folder = self.get_file_in_path(self.current_asset)
         for stage_folder in current_asset_folder:
+            if self.get_basename(stage_folder) == 'SakitechX.manager';
+                continue
             asset_files[self.get_basename(stage_folder)] = self.get_file_in_path(stage_folder)
 
         return asset_files
