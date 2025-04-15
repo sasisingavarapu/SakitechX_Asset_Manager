@@ -10,7 +10,9 @@ from SakitechX_Asset_Manager.utils.asset_manager import file_manager
 
 reload(file_manager)
 
-
+#Get all the files
+cFileManager.current_asset = cFileManager.asset[-1]
+cFileManager.get_asset_files()
 
 """
 import os
