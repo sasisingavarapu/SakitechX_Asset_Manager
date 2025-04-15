@@ -24,13 +24,13 @@ class FileManager(object):
             self.path = path
         else:
             self.path = self.get_scenes_from_config()
-
         self.asset = self.get_asset()
 
         if self.asset:
             self.current_asset = self.asset[0]
         else:
             self.current_asset = None
+
 
     def get_scenes_from_config(self):
         current_dir = os.path.dirname(__file__)
@@ -42,25 +42,29 @@ class FileManager(object):
             json_data = json.load(f)
 
         path = json_data['scenes_path']
-       # print(path)
+        #print(path)
         return path
 
     def get_file_in_path(self, path):
         return glob.glob(os.path.join(path, '*'))
 
     def get_asset(self):
-        return self.get_file_in_path(self.path)
+        asset = self.get_file_in_path(self.path)
+        real_asset =[]
+        for a in asset:
+            is os.path.exists(os.path.join(a, 'SakitexhX.manager')):
+                real_asset.append(a)
+        return real_asset
 
-    def get_asset_stages(self):
+    def get_asset_files(self):
         if not self.current_asset:
             return []
 
         asset_files = {}
-        current_asset_folder = self.get_file_in_path(self.current_asset)
 
+        current_asset_folder = self.get_file_in_path(self.current_asset)
         for stage_folder in current_asset_folder:
-            base = self.get_basename(stage_folder)
-            asset_files[base] = self.get_file_in_path(stage_folder)
+            asset_files[self.get_basename(stage_folder)] = self.get_file_in_path(stage_folder)
 
         return asset_files
 
