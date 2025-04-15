@@ -31,7 +31,6 @@ class FileManager(object):
         else:
             self.current_asset = None
 
-
     def get_scenes_from_config(self):
         current_dir = os.path.dirname(__file__)
         parent_dir = os.path.dirname(current_dir)
@@ -42,7 +41,6 @@ class FileManager(object):
             json_data = json.load(f)
 
         path = json_data['scenes_path']
-        #print(path)
         return path
 
     def get_file_in_path(self, path):
@@ -50,9 +48,9 @@ class FileManager(object):
 
     def get_asset(self):
         asset = self.get_file_in_path(self.path)
-        real_asset =[]
+        real_asset = []
         for a in asset:
-            is os.path.exists(os.path.join(a, 'SakitexhX.manager')):
+            if os.path.exists(os.path.join(a, 'SakitexhX.manager')):  # <- corrected
                 real_asset.append(a)
         return real_asset
 
@@ -64,7 +62,7 @@ class FileManager(object):
 
         current_asset_folder = self.get_file_in_path(self.current_asset)
         for stage_folder in current_asset_folder:
-            if self.get_basename(stage_folder) == 'SakitechX.manager';
+            if self.get_basename(stage_folder) == 'SakitechX.manager':  # <- corrected
                 continue
             asset_files[self.get_basename(stage_folder)] = self.get_file_in_path(stage_folder)
 
@@ -72,5 +70,3 @@ class FileManager(object):
 
     def get_basename(self, path):
         return os.path.basename(path)
-
-
