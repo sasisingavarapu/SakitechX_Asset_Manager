@@ -22,6 +22,9 @@ import json
 class FileManager(object):
 
     def __init__(self, path=False):
+
+        self.config_path = None
+
         if path:
             self.path = path
         else:
@@ -38,6 +41,8 @@ class FileManager(object):
         parent_dir = os.path.dirname(current_dir)
         grand_parent_dir = os.path.dirname(parent_dir)
         path_to_json = os.path.join(grand_parent_dir, 'path.json')
+        self.config_path = path_to_json
+
 
         with open(path_to_json, 'r') as f:
             json_data = json.load(f)
