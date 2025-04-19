@@ -20,7 +20,6 @@ cSakitechXAssetManager.show()
 """
 import os
 import json
-import glob
 
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtUiTools import QUiLoader
@@ -29,6 +28,7 @@ from shiboken6 import wrapInstance
 import maya.OpenMayaUI as omui
 from maya import cmds, mel
 from functools import partial
+import glob
 
 try:
    import importlib;from importlib import reload
@@ -58,6 +58,8 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         self.setWindowTitle(TITLE)
 
         self.cFileManager = files_manager.FileManager()
+
+        self.stage_tab = None
 
         self.init_ui()
         self.create_layout()
@@ -118,10 +120,10 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
     def populate_asset_layout(self):
         main_layout = self.ui.asset_vlayout
 
-        asset = self.cFileManager.asset
-        print('Assets:', asset)
+        assets = self.cFileManager.asset
+        print('Assets:', assets)
 
-        for asset_path in asset:
+        for asset_path in assets:
             bassename = self.get_basename(asset_path)
             folder_button = QtWidgets.QPushButton(bassename)
 
@@ -130,19 +132,37 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
             main_layout.addWidget(folder_button)
 
         # Connet button
-        folder_button.clicked.connect(partial(self.show_stages, asset_path))
+        stage = self.get_stages(asset_path)
+        folder_button.clicked.connect(partial(self.create_tab_stage, stage))
 
 
-    def show_stages(self, path):
+    def get_stages(self, path):
         self.cFileManager.current_asset = path
         asset_stages = self.cFileManager.get_asset_files()
-        print(asset_stages)
-
-
-
+        return asset_stages
 
     def clean_assets_layout(self):
-        ''
+         ''
+
+    def create_tab_stage(self, stages_dic ):
+
+        if self.stage_tab:
+            self.stage_tab.setParent(None)
+            self.stage_tab=None
+
+        self.stage_tab = QtWidgets.QTabWidget()
+        self.ui.asset_details.addWidget(self.stage_tab)
+
+        for stage in stages_dic:
+            tab = QtWidgets.QWidget()
+            layout = QtWidgets.QVBoxLayout(tab)
+            for data in stages_dic[stage]:
+                lable = QtWidgets.QLabel(data)
+                layout.addWidget(lable)
+            self.stage_tab.addTab(tab, stage)
+
+
+
 
 if __name__ == "__main__":
     try:
