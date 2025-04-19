@@ -20,6 +20,7 @@ cSakitechXAssetManager.show()
 """
 import os
 import json
+import glob
 
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtUiTools import QUiLoader
@@ -27,6 +28,7 @@ from shiboken6 import wrapInstance
 
 import maya.OpenMayaUI as omui
 from maya import cmds, mel
+from functools import partial
 
 try:
    import importlib;from importlib import reload
@@ -114,7 +116,7 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         return os.path.basename(path)
 
     def populate_asset_layout(self):
-        main_layout = self.ui.asset_layout
+        main_layout = self.ui.asset_vlayout
 
         asset = self.cFileManager.asset
         print('Assets:', asset)
@@ -122,15 +124,25 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         for asset_path in asset:
             bassename = self.get_basename(asset_path)
             folder_button = QtWidgets.QPushButton(bassename)
+
+            folder_button.setFixedSize(150,40)
+
             main_layout.addWidget(folder_button)
+
+        # Connet button
+        folder_button.clicked.connect(partial(self.show_stages, asset_path))
+
+
+    def show_stages(self, path):
+        self.cFileManager.current_asset = path
+        asset_stages = self.cFileManager.get_asset_files()
+        print(asset_stages)
 
 
 
 
     def clean_assets_layout(self):
         ''
-
-
 
 if __name__ == "__main__":
     try:
