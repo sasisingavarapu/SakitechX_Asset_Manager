@@ -1,5 +1,4 @@
 """
-
 try:
    import importlib;from importlib import reload
 except:
@@ -9,8 +8,14 @@ import SakitechX_Asset_Manager
 from SakitechX_Asset_Manager.ui.asset_manager import load_asset_manager
 reload(load_asset_manager)
 
+try:
+    cSakitechXAssetManager.close()
+except:
+    pass
+
 cSakitechXAssetManager = load_asset_manager.SakitechXAssetManager()
 cSakitechXAssetManager.show()
+
 
 """
 import os
@@ -68,6 +73,7 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         self.resize(800,400)
         self.check_path_exits()
         self.put_path_in_edit_line()
+        self.populate_asset_layout()
 
     def create_connections(self):
         self.ui.select_path_btn.clicked.connect(self.edit_path_line)
@@ -103,6 +109,26 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
     def edit_path_line(self):
         self.ask_window_path()
         self.put_path_in_edit_line()
+
+    def get_basename(self, path):
+        return os.path.basename(path)
+
+    def populate_asset_layout(self):
+        main_layout = self.ui.asset_layout
+
+        asset = self.cFileManager.asset
+        print('Assets:', asset)
+
+        for asset_path in asset:
+            bassename = self.get_basename(asset_path)
+            folder_button = QtWidgets.QPushButton(bassename)
+            main_layout.addWidget(folder_button)
+
+
+
+
+    def clean_assets_layout(self):
+        ''
 
 
 

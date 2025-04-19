@@ -57,7 +57,7 @@ class FileManager(object):
         asset = self.get_file_in_path(self.path)
         real_asset = []
         for a in asset:
-            if os.path.exists(os.path.join(a, 'SakitexhX.manager')):  # <- corrected
+            if os.path.exists(os.path.join(a, 'SakitechX.manager')):
                 real_asset.append(a)
         return real_asset
 
