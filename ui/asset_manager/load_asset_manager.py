@@ -20,6 +20,7 @@ cSakitechXAssetManager.show()
 """
 import os
 import json
+from os.path import basename
 
 from PySide6 import QtWidgets, QtCore, QtGui
 from PySide6.QtUiTools import QUiLoader
@@ -123,9 +124,13 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
             folder_button = QtWidgets.QPushButton(basename)
             folder_button.setFixedSize(150, 40)
 
+            main_layout.addWidget(folder_button)
+
+            # Button Connet
+
             stage = self.get_stages(asset_path)
             folder_button.clicked.connect(partial(self.create_tab_stage, stage))
-            main_layout.addWidget(folder_button)
+
 
     def get_stages(self, path):
         self.cFileManager.current_asset = path
@@ -133,7 +138,7 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         return asset_stages
 
     def clean_assets_layout(self):
-        pass
+        ''
 
     def create_tab_stage(self, stages_dic):
         if self.stage_tab:
@@ -146,11 +151,22 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         for stage in stages_dic:
             tab = QtWidgets.QWidget()
             layout = QtWidgets.QVBoxLayout(tab)
+
+            scroll = QtWidgets.QScrollArea(self)
+            wrap = QtWidgets.QWidget(self)
+            list_box = QtWidgets.QVBoxLayout(self)
+
             for data in stages_dic[stage]:
                 if not self.filter_by_ext(path=data):
                     continue
-                label = QtWidgets.QLabel(data)
-                layout.addWidget(label)
+                widget = self.create_file_widget(data)
+                layout.addWidget(widget)
+                #list_box.addStretch(1)
+
+            wrap.setLayout(list_box)
+            scroll.setWidget(wrap)
+            layout.addWidget(scroll)
+
             self.stage_tab.addTab(tab, stage)
 
     def filter_by_ext(self, path):
@@ -167,10 +183,33 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
 
         if current_ext == 'Show_All':
             return True
+
         elif current_ext.lower() == path_extension.lower():
             return True
+
         else:
             return False
+
+    def create_file_widget(self, file_path):
+        # Create a QWidget to act as a container
+        container = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout(container)
+
+        basename = os.path.basename(file_path)
+
+        label = QtWidgets.QLabel(basename)
+        label.setToolTip(file_path)
+        layout.addWidget(label)
+
+        open_btn = QtWidgets.QPushButton('open')
+        import_btn = QtWidgets.QPushButton('import')
+        ref_btn = QtWidgets.QPushButton('reference')
+
+        for btn in [open_btn, import_btn, ref_btn]:
+            btn.setFixedSize(80, 30)
+            layout.addWidget(btn)
+
+        return container  # Return the QWidget, not the layout
 
 
 if __name__ == "__main__":
