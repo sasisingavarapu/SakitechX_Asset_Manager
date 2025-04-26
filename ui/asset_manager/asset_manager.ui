@@ -157,9 +157,6 @@
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="1" column="0">
-              <layout class="QVBoxLayout" name="asset_details"/>
-             </item>
              <item row="0" column="0">
               <widget class="QFrame" name="frame_4">
                <property name="maximumSize">
@@ -274,6 +271,9 @@
                 </item>
                </layout>
               </widget>
+             </item>
+             <item row="1" column="0">
+              <layout class="QVBoxLayout" name="asset_details"/>
              </item>
              <item row="2" column="0">
               <spacer name="verticalSpacer_2">

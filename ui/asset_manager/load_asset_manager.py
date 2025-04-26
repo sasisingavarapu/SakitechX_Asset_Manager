@@ -205,11 +205,35 @@ class SakitechXAssetManager(QtWidgets.QMainWindow):
         import_btn = QtWidgets.QPushButton('import')
         ref_btn = QtWidgets.QPushButton('reference')
 
+        open_btn.clicked.connect(partial(self.file_button_function, 'open', file_path))
+        import_btn.clicked.connect(partial(self.file_button_function, 'import', file_path))
+        ref_btn.clicked.connect(partial(self.file_button_function, 'reference', file_path))
+
         for btn in [open_btn, import_btn, ref_btn]:
             btn.setFixedSize(80, 30)
             layout.addWidget(btn)
 
         return container  # Return the QWidget, not the layout
+
+    def file_button_function(self, action, file_path):
+        if action == 'open':
+            self.open_file(file_path)
+        elif action == 'import':
+            self.import_file(file_path)
+        elif action == 'reference':
+            self.reference_file(file_path)
+
+    def open_file(self, file_path):
+        cmds.file(file_path, open=True, force=True)
+        print("open file action")
+
+    def import_file(self, file_path):
+        cmds.file(file_path, i=True)
+        print("import file action")
+
+    def reference_file(self, file_path):
+        cmds.file(file_path, reference=True)
+        print("reference file action")
 
 
 if __name__ == "__main__":
